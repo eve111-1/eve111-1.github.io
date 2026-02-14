@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💛 给老婆的小花栈 · 新增制作花絮</title>
+    <style>
+        /* 全局重置 & 基础氛围 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fef9f0;
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.4s ease;
+            padding: 1rem;
+        }
+
+        /* 页面卡片容器 */
+        .page {
+            max-width: 1300px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(3px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
+            border-radius: 32px 32px 24px 24px;
+            padding: 2.5rem 2rem;
+            transition: all 0.3s ease;
+            border: 2px solid #ffe9ce;
+        }
+
+        /* 每个页面通用隐藏/显示 */
+        .hidden {
+            display: none !important;
+        }
+
+        /* ----- 第〇页：百度网盘伪装页（无任何提取码提示）----- */
+        #page0 {
+            text-align: center;
+            background: #ffffff;
+            border: 4px solid #e6e6e6;
+            box-shadow: 0 12px 0 #d0d0d0;
+            position: relative;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .baidu-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .baidu-logo span {
+            font-size: 3.5rem;
+            color: #4e6ef2;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .baidu-logo img {
+            width: 50px;
+            height: 50px;
+            background: #4e6ef2;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        /* 模拟百度网盘样式 */
+        .baidu-panel {
+            background: #f5f9ff;
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid #d9e6ff;
+        }
+
+        .extract-title {
+            font-size: 2.2rem;
+            color: #1e2e4d;
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+        }
+
+        .extract-sub {
+            font-size: 1.4rem;
+            color: #6a6f77;
+            margin-bottom: 2rem;
+        }
+
+        .code-input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        #extractCode {
+            width: 200px;
+            height: 60px;
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 8px;
+            border: 3px solid #4e6ef2;
+            border-radius: 16px;
+            background: white;
+            color: #1e2e4d;
+            outline: none;
+            padding: 0 0.5rem;
+        }
+
+        #extractCode:focus {
+            border-color: #ffb347;
+            box-shadow: 0 0 0 3px rgba(255, 180, 71, 0.3);
+        }
+
+        .extract-btn {
+            background: #4e6ef2;
+            color: white;
+            font-size: 1.8rem;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 6px 0 #2a4ad5;
+            transition: all 0.1s ease;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .extract-btn:hover {
+            background: #5f7cf5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #2a4ad5;
+        }
+
+        .extract-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #2a4ad5;
+        }
+
+        .error-message {
+            color: #e6503c;
+            font-size: 1.4rem;
+            min-height: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .baidu-footer {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+
+        /* ----- 第一页 大标题 + 安静的逃跑按钮（无任何计数文字）----- */
+        #page1 {
+            text-align: center;
+            background: #fffcf5;
+            border: 4px dashed #fad3a7;
+            box-shadow: 0 12px 0 #efd5b3;
+            position: relative;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-title {
+            font-size: 4.2rem;
+            font-weight: 700;
+            color: #b45f3b;
+            text-shadow: 4px 4px 0 #ffe3b6, 6px 6px 0 rgba(249, 168, 76, 0.3);
+            margin-bottom: 1.2rem;
+            letter-spacing: 1px;
+            word-break: break-word;
+        }
+
+        .wife-name {
+            font-size: 2.6rem;
+            color: #d48d5c;
+            display: inline-block;
+            background: #fff2da;
+            padding: 0.3rem 1.8rem;
+            border-radius: 60px;
+            margin: 0.5rem 0 1.8rem 0;
+            border: 2px solid #ffc489;
+            transform: rotate(-1deg);
+            box-shadow: 0 6px 0 #efcbaa;
+        }
+
+        /* 逃跑按钮容器 */
+        .escape-btn-container {
+            position: relative;
+            width: 100%;
+            height: 120px;
+            margin: 2rem 0 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 那个会逃跑的按钮 */
+        .hint-click {
+            font-size: 1.9rem;
+            color: #a8643c;
+            background: #fff1d0;
+            display: inline-block;
+            padding: 0.8rem 2.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            border: 2px solid #fec196;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 0 #e2b48c;
+            font-weight: 500;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            z-index: 20;
+        }
+
+        .daisy-decor {
+            font-size: 2.8rem;
+            line-height: 1.2;
+            margin: 1rem 0 0.5rem;
+            color: #fabb7c;
+            filter: drop-shadow(0 4px 2px #ffe2b3);
+        }
+
+        /* ----- 第二页：花装饰 + 请开启电子相册（由此进入制作花絮）----- */
+        #page2 {
+            background: #fffbf2;
+            border: 6px double #f9c991;
+            position: relative;
+            text-align: center;
+            padding: 3.5rem 2rem;
+        }
+
+        .flower-frame {
+            position: relative;
+            background: #fff6e9;
+            border-radius: 48px;
+            padding: 2.8rem 2.2rem;
+            border: 2px solid #fad19e;
+            box-shadow: inset 0 0 0 2px #fff8e7, 0 12px 0 #ebc7a0;
+        }
+
+        /* 上雏菊带 */
+        .flower-frame::before {
+            content: "🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼";
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            font-size: 30px;
+            letter-spacing: 14px;
+            color: #f9b042;
+            text-shadow: 0 2px 8px #ffe6b0, 0 4px 4px #fff2d0;
+            white-space: nowrap;
+            overflow: hidden;
+            background: linear-gradient(90deg, transparent, #fffcf0, transparent);
+            padding: 0 0 4px 0;
+            z-index: 5;
+        }
+
+        /* 下雏菊带 */
+        .flower-frame::after {
+            content: "🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼  🌼";
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            font-size: 30px;
+            letter-spacing: 14px;
+            color: #f7b23b;
+            text-shadow: 0 2px 8px #ffecbb, 0 4px 4px #ffefcb;
+            white-space: nowrap;
+            overflow: hidden;
+            background: linear-gradient(90deg, transparent, #fff6e5, transparent);
+            padding: 4px 0 0 0;
+            z-index: 5;
+        }
+
+        /* 左侧雏菊列 */
+        .daisy-left-col {
+            position: absolute;
+            left: -20px;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            font-size: 32px;
+            color: #f8b544;
+            text-shadow: 0 0 6px #ffdd9e;
+            background: transparent;
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        .daisy-right-col {
+            position: absolute;
+            right: -20px;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            font-size: 32px;
+            color: #f8b544;
+            text-shadow: 0 0 6px #ffdd9e;
+            background: transparent;
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        /* 第二页中央大按钮 - 指向制作花絮页 */
+        .album-button {
+            font-size: 3.2rem;
+            font-weight: 600;
+            background: #fff2de;
+            padding: 1.8rem 2.8rem;
+            border-radius: 120px;
+            border: 4px solid #fbc98b;
+            box-shadow: 0 14px 0 #ddb586;
+            color: #6b3f24;
+            display: inline-block;
+            margin: 2rem 0 1.2rem;
+            cursor: pointer;
+            transition: 0.1s linear;
+            line-height: 1.2;
+            transform: rotate(-0.5deg);
+        }
+
+        .album-button:hover {
+            background: #ffeacb;
+            transform: translateY(-3px) rotate(-0.3deg);
+            box-shadow: 0 16px 0 #ddb586;
+        }
+
+        .album-button:active {
+            transform: translateY(6px) rotate(-0.5deg);
+            box-shadow: 0 6px 0 #c79f64;
+        }
+
+        /* ----- 第三页（新）：我是怎么做视频的视频（上班.mp4）----- */
+        #page3 {
+            background: #fefaf2;
+            border: 6px double #f5cba1;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .making-frame {
+            border: 4px solid #fed6a3;
+            border-radius: 40px;
+            padding: 20px 20px 20px 20px;
+            background: #fff7ea;
+            box-shadow: 0 16px 0 #e6c394, inset 0 -2px 10px #ffeecc;
+            margin-bottom: 1rem;
+        }
+
+        .making-title {
+            font-size: 2.8rem;
+            color: #b45f3b;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 0 #ffe3b6;
+        }
+
+        .making-sub {
+            font-size: 1.8rem;
+            color: #a86833;
+            margin: 1rem 0 0.5rem;
+        }
+
+        video {
+            width: 100%;
+            max-width: 1200px;
+            height: auto;
+            max-height: 775px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            background: #2e2e2e;
+            outline: 3px solid #ffe0b5;
+            outline-offset: 4px;
+        }
+
+        /* ----- 第四页：最终视频播放页（原第三页）----- */
+        #page4 {
+            background: #fefaf2;
+            border: 6px double #f5cba1;
+            padding: 2rem 1.5rem;
+        }
+
+        .video-frame {
+            border: 4px solid #fed6a3;
+            border-radius: 40px;
+            padding: 20px 20px 20px 20px;
+            background: #fff7ea;
+            box-shadow: 0 16px 0 #e6c394, inset 0 -2px 10px #ffeecc;
+            margin-bottom: 1rem;
+        }
+
+        .video-note {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #a86833;
+            margin-top: 1.2rem;
+        }
+
+        .video-note span {
+            display: inline-block;
+            animation: gentleWave 2s infinite ease-in-out;
+        }
+
+        @keyframes gentleWave {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(3deg) scale(1.02); }
+        }
+
+        .nav-helper {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #b4773f;
+            flex-wrap: wrap;
+        }
+
+        .nav-helper span {
+            cursor: pointer;
+            border-bottom: 2px dotted #fdc98e;
+            padding: 0 0.2rem;
+        }
+
+        .nav-helper span:hover {
+            color: #e09d5b;
+        }
+
+        /* 响应式修正 */
+        @media (max-width: 700px) {
+            .main-title { font-size: 3rem; }
+            .album-button { font-size: 2.2rem; }
+            .flower-frame::before { font-size: 22px; letter-spacing: 6px; }
+            .flower-frame::after { font-size: 22px; letter-spacing: 6px; }
+            .daisy-left-col, .daisy-right-col { font-size: 24px; width: 20px; left: -12px; right: -12px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 五页容器：page0(百度网盘), page1(打招呼), page2(花装饰), page3(上班.mp4制作花絮), page4(最终视频2.14.mp4) -->
+    <div style="width:100%;">
+        <!-- 第〇页：百度网盘伪装页（无任何提取码提示） -->
+        <div id="page0" class="page">
+            <div class="baidu-logo">
+                <span>百度网盘</span>
+                <div style="width:50px;height:50px;background:#4e6ef2;border-radius:12px;"></div>
+            </div>
+            
+            <div class="baidu-panel">
+                <div class="extract-title">🔐 提取文件</div>
+                <div class="extract-sub">请输入提取码：</div>
+                
+                <div class="code-input-area">
+                    <input type="text" id="extractCode" maxlength="4" placeholder="****" inputmode="numeric" pattern="\d*">
+                    <button class="extract-btn" id="extractBtn">提取文件</button>
+                    <div class="error-message" id="extractError"></div>
+                </div>
+                
+                <!-- 完全移除了任何可能显示提取码的链接和提示 -->
+                <div style="margin-top: 2rem; font-size: 1.3rem; color: #8590a6;">
+                    链接: https://pan.baidu.com/s/1daisyLove<br>
+                    <!-- 提取码那一行完全删除 -->
+                </div>
+            </div>
+            
+            <div class="baidu-footer">
+                ⚡ 高速下载  |  安全可靠
+            </div>
+            
+            <!-- 加一点小雏菊装饰，但保持百度风格为主 -->
+            <div style="margin-top: 1rem; opacity:0.4;">🌼 🌼 🌼</div>
+        </div>
+
+        <!-- 第一页：打招呼 + 逃跑按钮（纯净版：没有任何计数或指引文字） -->
+        <div id="page1" class="page hidden">
+            <div class="daisy-decor">🌼 🌼 🌼</div>
+            <div class="main-title">
+                老婆你好！是我！
+            </div>
+            <div class="wife-name">
+                💛 欢迎光临 zzz 的小网站 💛
+            </div>
+            
+            <!-- 只有逃跑按钮，没有任何文字提示 -->
+            <div class="escape-btn-container" id="escapeContainer">
+                <div class="hint-click" id="goToPage2Btn">
+                    👉 戳戳这里 继续 👈
+                </div>
+            </div>
+
+            <!-- 这里完全移除了点击计数器和底部指引文字，只保留上下的雏菊装饰 -->
+            <div class="daisy-decor">🌼  🌼  🌼</div>
+        </div>
+
+        <!-- 第二页：满花装饰 + 请开启电子相册（点击进入制作花絮页） -->
+        <div id="page2" class="page hidden">
+            <div class="flower-frame" style="position: relative; overflow: visible;">
+                <div class="daisy-left-col">
+                    🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼
+                </div>
+                <div class="daisy-right-col">
+                    🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼<br>🌼
+                </div>
+                <div style="text-align: center; padding: 1rem 0;">
+                    <span style="font-size: 3.4rem; color: #f7b859;">🌼  ✿  🌼</span>
+                    <div class="album-button" id="goToPage3Btn">
+                        📸 老婆请开启电子相册 📸
+                    </div>
+                    <p style="font-size: 2rem; color: #c4763b; margin: 1.2rem 0 0.2rem;">满框花花的回忆</p>
+                    <div style="font-size: 2.6rem; line-height: 1.4;">🌸 🌼 🌻</div>
+                </div>
+            </div>
+            <div class="nav-helper">
+                <span id="backToPage1From2">返回第一页</span>
+            </div>
+        </div>
+
+        <!-- 第三页（新）：我是怎么做视频的视频（上班.mp4） -->
+        <div id="page3" class="page hidden">
+            <div class="making-frame">
+                <div class="making-title">🎬 我是怎么做视频的 🎬</div>
+                <video src="上班.mp4" controls autoplay playsinline></video>
+                <div class="making-sub">🌼 上班摸鱼偷偷学剪辑 🌼</div>
+            </div>
+            <div class="nav-helper">
+                <span id="backToPage2From3">← 返回花花页</span>
+                &nbsp;&nbsp;·&nbsp;&nbsp;
+                <span id="goToPage4Btn">📽️ 看最终作品 📽️</span>
+                &nbsp;&nbsp;·&nbsp;&nbsp;
+                <span id="backToPage1From3">🏠 回到开头</span>
+            </div>
+        </div>
+
+        <!-- 第四页：最终视频播放（2.14.mp4） -->
+        <div id="page4" class="page hidden">
+            <div class="video-frame">
+                <video src="2.14.mp4" controls autoplay playsinline></video>
+            </div>
+            <div class="video-note">
+                <span>🌼 老婆请看我的小作品 🌼</span>
+            </div>
+            <div class="nav-helper">
+                <span id="backToPage3From4">← 返回制作花絮</span>
+                &nbsp;&nbsp;·&nbsp;&nbsp;
+                <span id="backToPage1From4">🏠 回到开头</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 固定角落雏菊装饰 -->
+    <div style="position: fixed; bottom: 6px; left: 6px; opacity: 0.6; font-size: 2rem; pointer-events: none;">🌼</div>
+    <div style="position: fixed; top: 6px; right: 12px; opacity: 0.5; font-size: 2.4rem; pointer-events: none;">🌼</div>
+
+    <script>
+        (function() {
+            // 获取五个页面
+            const page0 = document.getElementById('page0');
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            const page3 = document.getElementById('page3');
+            const page4 = document.getElementById('page4');
+
+            // 百度网盘提取相关元素
+            const extractBtn = document.getElementById('extractBtn');
+            const extractCode = document.getElementById('extractCode');
+            const extractError = document.getElementById('extractError');
+            const CORRECT_CODE = '1535';  // 正确提取码，页面上无任何提示
+
+            // 获取逃跑按钮和相关元素
+            const escapeBtn = document.getElementById('goToPage2Btn');
+            const container = document.getElementById('escapeContainer');
+
+            // 点击计数器（只在后台运行，用户完全看不见）
+            let clickCount = 0;
+            const MAX_CLICKS = 3;  // 前3次逃跑，第4次成功
+
+            // 显示指定页面，隐藏其他
+            function showPage(pageToShow) {
+                [page0, page1, page2, page3, page4].forEach(p => p.classList.add('hidden'));
+                pageToShow.classList.remove('hidden');
+            }
+
+            // 按钮逃跑函数 (随机位置) - 安静移动，无任何提示
+            function moveButtonRandomly() {
+                const containerRect = container.getBoundingClientRect();
+                const btnRect = escapeBtn.getBoundingClientRect();
+
+                // 确保按钮不会跑出容器可视范围
+                const maxX = Math.max(0, containerRect.width - btnRect.width);
+                const maxY = Math.max(0, containerRect.height - btnRect.height);
+
+                const randomX = maxX > 0 ? Math.random() * maxX : 0;
+                const randomY = maxY > 0 ? Math.random() * maxY : 0;
+
+                escapeBtn.style.left = randomX + 'px';
+                escapeBtn.style.top = randomY + 'px';
+                escapeBtn.style.transform = 'none';
+            }
+
+            // 重置按钮位置到初始居中
+            function resetButtonPosition() {
+                escapeBtn.style.left = '50%';
+                escapeBtn.style.top = '';
+                escapeBtn.style.transform = 'translateX(-50%)';
+            }
+
+            // 百度网盘提取按钮点击事件
+            extractBtn.addEventListener('click', function() {
+                const enteredCode = extractCode.value.trim();
+                if (enteredCode === CORRECT_CODE) {
+                    // 输入正确，跳转到第一页（打招呼页）
+                    extractError.textContent = '';
+                    extractCode.value = '';  // 清空输入
+                    showPage(page1);
+                    // 重置逃跑按钮状态
+                    clickCount = 0;
+                    resetButtonPosition();
+                } else {
+                    // 输入错误，显示错误信息（但不提示正确密码）
+                    extractError.textContent = '❌ 提取码错误，请重新输入';
+                    extractCode.value = '';  // 清空方便重新输入
+                    extractCode.focus();
+                }
+            });
+
+            // 允许按回车键提交
+            extractCode.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    extractBtn.click();
+                }
+            });
+
+            // 第一页按钮点击处理 (没有任何文字提示，完全静默)
+            escapeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                if (clickCount < MAX_CLICKS - 1) {
+                    // 前两次点击：计数增加，按钮逃跑
+                    clickCount++;
+                    moveButtonRandomly();
+                } 
+                else if (clickCount === MAX_CLICKS - 1) {
+                    // 第三次点击：计数增加，按钮最后一次逃跑
+                    clickCount++;
+                    moveButtonRandomly();
+                } 
+                else {
+                    // 第四次点击：进入第二页（花花页）
+                    clickCount = 0;
+                    resetButtonPosition();
+                    showPage(page2);
+                }
+            });
+
+            // 第二页进入第三页（制作花絮）
+            document.getElementById('goToPage3Btn').addEventListener('click', function() {
+                showPage(page3);
+                const videoEl = document.querySelector('#page3 video');
+                if (videoEl) {
+                    videoEl.play().catch(e => console.log('自动播放被阻止', e));
+                }
+            });
+
+            // 第三页进入第四页（最终视频）
+            document.getElementById('goToPage4Btn').addEventListener('click', function() {
+                showPage(page4);
+                const videoEl = document.querySelector('#page4 video');
+                if (videoEl) {
+                    videoEl.play().catch(e => console.log('自动播放被阻止', e));
+                }
+            });
+
+            // 返回导航
+            document.getElementById('backToPage1From2').addEventListener('click', function() {
+                clickCount = 0;
+                resetButtonPosition();
+                showPage(page1);
+            });
+
+            document.getElementById('backToPage2From3').addEventListener('click', function() {
+                // 暂停第三页的视频
+                const videoEl3 = document.querySelector('#page3 video');
+                if (videoEl3) videoEl3.pause();
+                showPage(page2);
+            });
+
+            document.getElementById('backToPage1From3').addEventListener('click', function() {
+                clickCount = 0;
+                resetButtonPosition();
+                // 暂停第三页的视频
+                const videoEl3 = document.querySelector('#page3 video');
+                if (videoEl3) videoEl3.pause();
+                showPage(page1);
+            });
+
+            document.getElementById('backToPage3From4').addEventListener('click', function() {
+                // 暂停第四页的视频
+                const videoEl4 = document.querySelector('#page4 video');
+                if (videoEl4) videoEl4.pause();
+                showPage(page3);
+            });
+
+            document.getElementById('backToPage1From4').addEventListener('click', function() {
+                clickCount = 0;
+                resetButtonPosition();
+                // 暂停第四页的视频
+                const videoEl4 = document.querySelector('#page4 video');
+                if (videoEl4) videoEl4.pause();
+                showPage(page1);
+            });
+
+            // 初始化显示第〇页（百度网盘页）
+            showPage(page0);
+            // 确保逃跑按钮初始化位置正确
+            resetButtonPosition();
+        })();
+    </script>
+</body>
+</html>
